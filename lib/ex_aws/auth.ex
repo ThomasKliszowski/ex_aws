@@ -68,7 +68,9 @@ defmodule ExAws.Auth do
       ) do
     with {:ok, config} <- validate_config(config) do
       service = service_name(service)
-      signed_headers = presigned_url_headers(url, query_params)
+
+      query_headers = Keyword.drop(query_params, ["partNumber", "uploadId"])
+      signed_headers = presigned_url_headers(url, query_headers)
 
       org_query_params = query_params |> Enum.map(fn {k, v} -> {to_string(k), v} end)
 
